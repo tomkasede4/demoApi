@@ -9,7 +9,6 @@ spec:
       app: demo
   template:
     metadata:
-      creationtimestamp: null
       labels:
         app: demo
       annotations:
