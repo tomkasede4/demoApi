@@ -1,19 +1,12 @@
-prometheus:
-  url: http://prometheus-server.default.svc
-  port: 80
-  path: ""
-
-rules:
-  default: true
-  custom:
-    - seriesQuery: '{__name__=~"^http_server_requests_per_seconds_.*"}'
-      resources:
-        overrides:
-          kubernetes_namespace:
-            resource: namespace
-          kubernetes_pod_name:
-            resource: pod
-      name:
-        matches: "^http_server_requests_seconds_count(.*)"
-        as: "http_server_requests_seconds_count_sum"
-      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>,uri=~"/books.*"}) by (<<.GroupBy>>)
+global:
+    scrape_interval: 10s
+    evaluation_interval: 15s
+scrape_configs:
+  - job_name: 'demo_app_metrics'
+    metrics_path: /actuator/prometheus
+    scrape_interval: 5s
+    static_configs:
+      - targets: ["localhost:8081"]
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]

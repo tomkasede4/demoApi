@@ -28,7 +28,9 @@ public class BooksController {
 
 
     @GetMapping("/getbooks")
-    @Timed("books.all")
+    @Timed(
+            value="get_all_books.requests",histogram = true,extraTags = {"version","1.0"},percentiles = {0.95,0.99}
+    )
     public ResponseEntity<?> getAllBooks(){
         counter.increment();
         log.info("getBooks");
@@ -36,7 +38,9 @@ public class BooksController {
         return ResponseEntity.ok(response);
     }
     @GetMapping("/getbook")
-    @Timed("books.all")
+    @Timed(
+            value="get_book_by_title.requests",histogram = true,extraTags = {"version","1.0"},percentiles = {0.95,0.99}
+    )
     public ResponseEntity<?> getBookByTitle(){
         counter.increment();
         log.info("getBook");
